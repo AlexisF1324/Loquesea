@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/estiloformulario.css">
+    <title>Document</title>
+</head>
+<body style="background-image: url('img/images.jpeg');">
+    <style>
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .card {
+            margin: 10px;
+        }
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+    <nav>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="listardatos.html">Listar Datos</a></li>
+        </ul>
+    </nav>
+    <div class="cart">
+        <p>Productos en el carrito: <span id="cart-count">0</span></p>
+    </div>
+    <h2>Películas</h2>
+    <div class="card-container" id="peliculas-list"></div>
+
+    <script>
+        let cartCount = 0;
+        // Función para cargar las películas al cargar la página
+        window.onload = function () {
+            // Realizar una solicitud GET a la ruta /peliculas
+            fetch('/peliculas')
+            // Procesar la respuesta como JSON
+            .then(function(response) {
+                return response.json();
+            })
+            // Cuando se obtienen los datos JSON
+            .then(function(data) {
+                // Obtener una referencia al elemento HTML con el ID 'peliculas-list'
+                var peliculasList = document.getElementById('peliculas-list');
+                // Iterar sobre cada película en los datos recibidos
+                data.forEach(function(pelicula) {
+                    // Crear una nueva tarjeta
+                    var card = document.createElement('div');
+                    card.classList.add('card');
+                    card.style.width = '18rem';
+                    // Establecer el contenido HTML de la tarjeta con los datos de la película
+                    card.innerHTML = '<img src="' + (pelicula.imagen || 'https://via.placeholder.com/150') + '" class="card-img-top" alt="' + pelicula.nombre + '">' +
+                                     '<div class="card-body">' +
+                                     '<h5 class="card-title">' + pelicula.nombre + '</h5>' +
+                                     '<p class="card-text">' + pelicula.descripcion + '</p>' +
+                                     '<p><strong>Fecha de Estreno:</strong> ' + new Date(pelicula.fecha).toLocaleDateString() + '</p>' +
+                                     '<p><strong>Categoría:</strong> ' + pelicula.categoria + '</p>' +
+                                     '<p><strong>Precio Entrada:</strong> $' + pelicula.precio + '</p>' +
+                                     '<button class="btn btn-danger" onclick="eliminarPelicula(' + pelicula.id + ')">Eliminar</button>' +
+                                     '<button class="btn btn-primary" onclick="modificarPelicula(' + pelicula.id + ')">Modificar</button>' +
+                                     '<button class="btn btn-success" onclick="agregarAlCarrito()">Agregar al Carrito</button>' +
+                                     '</div>';
+                    // Agregar la tarjeta a la lista de películas
+                    peliculasList.appendChild(card);
+                });
+            });
+        };
+         // Función para agregar al carrito
+         function agregarAlCarrito() {
+            cartCount++;
+            document.getElementById('cart-count').innerText = cartCount;
+        }
+    </script>
+
+    <script>
+        // Función para eliminar una película
+        function eliminarPelicula(id) {
+            fetch('/eliminar_pelicula/' + id, {
+                method: 'DELETE'
+            })
+            .then(function(response) {
+                if (response.ok) {
+                    console.log('Película eliminada correctamente.');
+                    // Actualizar la tabla después de eliminar la película
+                    window.location.reload();
+                } else {
+                    console.error('Error al eliminar película.');
+                }
+            })
+            .catch(function(error) {
+                console.error('Error en la solicitud:', error);
+            });
+        }
+    
+    </script>
+
+    <script>
+        // Función para modificar una película
+        function modificarPelicula(id) {
+            // Redirigir a la página de modificación de película con el ID correspondiente
+            window.location.href = '/modificar_pelicula.html?id=' + id;
+        }
+    </script>
+</body>
+</html>

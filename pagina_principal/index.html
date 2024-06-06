@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/estiloformulario.css">
+    <script src="js/validaciones.js"></script>
+    <title>Pelicula</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="listardatos.html">Listar Datos</a></li>
+        </ul>
+    </nav>
+    
+    <h2>Formulario de Películas</h2>
+
+    <form id="formulario-pelicula" action="/guardar_pelicula" method="post" onSubmit="return valida();">
+    
+        <div>
+            <label for="nombre">Nombre Pelicula:</label>
+            <input type="text" id="nombre" name="nombre">
+        </div>
+        <div>
+            <label for="descripcion">Descripcion:</label>
+            <input type="text" id="descripcion" name="descripcion">
+        </div>
+        <div>
+            <label for="fecha">Fecha de Estreno:</label>
+            <input type="date" id="fecha" name="fecha">
+        </div>
+        <div>
+            <label for="categoria">Categoria:</label>
+            <select id="categoria" name="categoria">
+                <option value="" disabled selected>Selecciona un género</option>
+                <option value="Aventura">Aventura</option>
+                <option value="Acción">Acción</option>
+                <option value="Comedia">Comedia</option>
+                <option value="Drama">Drama</option>
+                <option value="Ciencia ficción">Ciencia ficción</option>
+                <option value="Fantasía">Fantasía</option>
+            </select>
+        </div>
+        <div>
+            <label for="precio">Precio Entrada:</label>
+            <input type="number" id="precio" name="precio">
+        </div>
+
+        <input type="submit" value="Enviar">
+    </form>
+
+</body>
+</html>
